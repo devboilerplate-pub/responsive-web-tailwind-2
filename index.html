@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RECIPE ARCHIVE | Editorial Food Magazine</title>
+    <meta name="description"
+        content="A curated digital culinary archive featuring global recipes in a beautifully designed editorial format.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/input.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ivory: '#fdfbf7',
+                        deepgreen: '#0f3d30',
+                        tomato: '#e04836',
+                    },
+                    fontFamily: {
+                        editorial: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    },
+                    aspectRatio: {
+                        '4/5': '4 / 5',
+                        '3/4': '3 / 4',
+                        '16/9': '16 / 9',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-ivory text-deepgreen font-sans antialiased">
+
+    <!-- Header -->
+    <header
+        class="fixed top-0 w-full z-50 bg-ivory/90 backdrop-blur-sm border-b border-deepgreen/10"
+        id="header">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Left: Logo -->
+            <div class="w-1/3">
+                <a href="#" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" class="font-editorial text-2xl font-bold tracking-tight hover:text-tomato transition-colors">RECIPE ARCHIVE</a>
+            </div>
+
+            <!-- Center: Navigation -->
+            <nav class="hidden md:flex justify-center gap-8 w-1/3 text-sm font-semibold tracking-widest text-deepgreen/70">
+                <a href="#archive-section" class="hover:text-tomato transition-colors">레시피 보관소</a>
+                <a href="#popular-section" class="hover:text-tomato transition-colors">이번 주 인기 레시피</a>
+            </nav>
+
+            <!-- Right: Search & Favs -->
+            <div class="w-1/3 flex justify-end gap-6">
+                <button id="search-btn"
+                    class="text-sm tracking-widest uppercase hover:text-tomato transition-colors">Search</button>
+                <button id="favs-btn"
+                    class="text-sm tracking-widest uppercase hover:text-tomato transition-colors relative">
+                    Favorites <span id="fav-count"
+                        class="absolute -top-2 -right-3 bg-tomato text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center opacity-0 transition-opacity">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar (Hidden by default) -->
+        <div id="search-container"
+            class="hidden absolute top-full left-0 w-full bg-ivory border-b border-deepgreen/10 py-4 px-6 shadow-sm">
+            <div class="max-w-3xl mx-auto flex items-center gap-4">
+                <svg class="w-5 h-5 text-deepgreen/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" id="search-input" placeholder="레시피, 재료 등을 검색하세요..."
+                    class="w-full bg-transparent border-none focus:ring-0 outline-none font-editorial italic text-lg placeholder-deepgreen/40">
+                <button id="close-search-btn"
+                    class="text-xs uppercase tracking-widest text-deepgreen/50 hover:text-tomato">닫기</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Hero Section -->
+        <section id="hero-section" class="relative w-full h-[80vh] min-h-[600px] overflow-hidden group">
+            <div id="hero-image"
+                class="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] group-hover:scale-105"
+                style="background-image: url('./images/hero.jpg')">
+            </div>
+            <!-- Overlay -->
+            <div class="absolute inset-0 bg-black/20"></div>
+
+            <!-- Layered Text Panel -->
+            <div
+                class="absolute bottom-16 left-6 md:left-16 bg-ivory p-8 md:p-12 max-w-sm border-l-4 border-tomato shadow-xl">
+                <p class="text-xs uppercase tracking-[0.2em] text-tomato font-semibold mb-4">추천 레시피</p>
+                <h2 id="hero-title" class="font-editorial text-4xl md:text-5xl leading-tight mb-6">매콤달콤<br>비빔냉면</h2>
+                <div class="flex gap-4 text-xs font-medium tracking-wider border-t border-deepgreen/20 pt-4">
+                    <span id="hero-time">30분</span>
+                    <span id="hero-diff">쉬움</span>
+                    <span id="hero-serv">2인분</span>
+                </div>
+                <button id="hero-cta" data-id="1"
+                    class="mt-8 bg-deepgreen text-ivory px-6 py-3 text-sm uppercase tracking-widest hover:bg-tomato transition-colors w-full">레시피 보기</button>
+            </div>
+        </section>
+
+
+
+        <!-- Recipe Archive Grid -->
+        <section id="archive-section" class="py-16 md:py-24 scroll-mt-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="mb-10 flex justify-between items-end">
+                    <h2 class="font-editorial text-4xl">레시피 보관소</h2>
+                    <select id="sort-select"
+                        class="bg-transparent border-b border-deepgreen/30 pb-1 text-sm uppercase tracking-widest focus:outline-none cursor-pointer hover:border-deepgreen transition-colors">
+                        <option value="default">최신순</option>
+                        <option value="time">조리시간 짧은순</option>
+                        <option value="title">가나다순</option>
+                    </select>
+                </div>
+
+                <!-- Category Navigation -->
+                <div class="mb-8 border-b border-deepgreen/10">
+                    <div id="category-nav" class="flex gap-10 overflow-x-auto hide-scrollbar pb-4">
+                        <!-- Categories will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Archive Filter Status -->
+                <div id="filter-status" class="hidden mb-8">
+                    <h3 class="font-editorial text-2xl flex items-center gap-4">
+                        <span id="filter-title">검색 결과</span>
+                        <button id="clear-filter-btn"
+                            class="text-xs font-sans uppercase tracking-widest text-tomato border border-tomato px-3 py-1 rounded-full hover:bg-tomato hover:text-ivory transition-colors">초기화</button>
+                    </h3>
+                </div>
+
+                <!-- Editorial Grid Container -->
+                <div id="archive-grid" class="editorial-grid">
+                    <!-- Cards will be injected here by JS -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="hidden text-center py-20">
+                    <p class="font-editorial italic text-2xl text-deepgreen/60">조건에 맞는 레시피가 없습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Divider -->
+        <div class="max-w-7xl mx-auto px-6">
+            <hr class="border-deepgreen/10">
+        </div>
+
+        <!-- Popular Recipes (Smaller Strip) -->
+        <section id="popular-section" class="py-16 md:py-24 bg-deepgreen/5 scroll-mt-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="font-editorial text-3xl mb-10 text-center">이번 주 인기 레시피</h2>
+                <div id="popular-grid" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <!-- Rendered by JS -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-deepgreen text-ivory pt-16 pb-32 md:pb-64 mt-20">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="font-editorial text-3xl mb-4">RECIPE ARCHIVE</h2>
+                <p class="text-ivory/70 max-w-sm text-sm leading-relaxed">전 세계의 간단하고 맛있는 요리를 소개하는 디지털 요리 아카이브입니다. 에디토리얼 감성으로 큐레이션합니다.</p>
+            </div>
+            <div class="md:text-right flex flex-col md:items-end justify-center">
+                <p class="text-xs uppercase tracking-widest mb-4">뉴스레터 구독하기</p>
+                <div class="flex max-w-sm w-full border-b border-ivory/30 pb-2">
+                    <input type="email" placeholder="이메일 주소"
+                        class="bg-transparent border-none w-full outline-none placeholder-ivory/50 text-sm">
+                    <button
+                        class="uppercase text-xs tracking-widest hover:text-tomato transition-colors">구독</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="fixed inset-0 z-[100] hidden">
+        <!-- Backdrop -->
+        <div id="modal-backdrop"
+            class="absolute inset-0 bg-deepgreen/80 backdrop-blur-sm cursor-pointer opacity-0 transition-opacity duration-300">
+        </div>
+
+        <!-- Modal Content -->
+        <div id="modal-content"
+            class="absolute inset-y-0 right-0 w-full md:w-11/12 lg:w-4/5 xl:w-3/4 bg-ivory shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out overflow-y-auto flex flex-col">
+
+            <!-- Modal Header -->
+            <div
+                class="sticky top-0 z-10 flex justify-between items-center p-6 bg-ivory/95 backdrop-blur-sm border-b border-deepgreen/10">
+                <button id="modal-fav-btn"
+                    class="text-sm uppercase tracking-widest hover:text-tomato transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4 fav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                        </path>
+                    </svg>
+                    <span id="modal-fav-text">찜하기</span>
+                </button>
+                <button id="close-modal-btn" class="p-2 hover:bg-deepgreen/5 rounded-full transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="flex-1">
+                <!-- Large Modal Image -->
+                <div class="w-full h-64 md:h-96 relative">
+                    <img id="modal-image" src="" alt="" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 md:bottom-10 md:left-10 text-white">
+                        <span id="modal-category"
+                            class="text-xs font-sans uppercase tracking-[0.2em] text-tomato font-bold mb-2 block"></span>
+                        <h2 id="modal-title" class="font-editorial text-4xl md:text-6xl font-bold leading-tight"></h2>
+                    </div>
+                </div>
+
+                <!-- Info Bar -->
+                <div
+                    class="bg-deepgreen text-ivory py-4 px-6 md:px-10 flex gap-8 text-xs uppercase tracking-widest overflow-x-auto hide-scrollbar">
+                    <div class="flex flex-col"><span class="text-ivory/50 mb-1">조리시간</span><span id="modal-time"></span>
+                    </div>
+                    <div class="flex flex-col"><span class="text-ivory/50 mb-1">난이도</span><span
+                            id="modal-diff"></span></div>
+                    <div class="flex flex-col"><span class="text-ivory/50 mb-1">분량</span><span
+                            id="modal-serv"></span></div>
+                </div>
+
+                <!-- Content Columns -->
+                <div class="p-6 md:p-10 max-w-5xl mx-auto">
+                    <p id="modal-desc"
+                        class="font-editorial italic text-xl md:text-2xl text-deepgreen/80 mb-12 border-l-2 border-tomato pl-6">
+                    </p>
+
+                    <!-- Grid for Ingredients and Steps -->
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-16">
+
+                        <!-- Ingredients (Left on desktop) -->
+                        <div class="md:col-span-4">
+                            <h3 class="font-editorial text-2xl mb-6 uppercase tracking-widest text-tomato">재료
+                            </h3>
+                            <ul id="modal-ingredients" class="space-y-4">
+                                <!-- Injected by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- Steps (Right on desktop) -->
+                        <div class="md:col-span-8">
+                            <h3 class="font-editorial text-2xl mb-6 uppercase tracking-widest text-tomato">조리 순서</h3>
+                            <div id="modal-steps" class="space-y-8">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div id="menu-overlay" class="fixed inset-0 z-[60] hidden">
+        <div id="menu-backdrop" class="absolute inset-0 bg-deepgreen/95 backdrop-blur-md opacity-0 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-ivory">
+            <button id="close-menu-btn" class="absolute top-6 right-6 p-2 hover:text-tomato transition-colors">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <nav class="flex flex-col gap-8 text-center" id="menu-nav">
+                <a href="#" class="font-editorial text-4xl md:text-5xl hover:text-tomato transition-colors menu-link" data-action="home">홈</a>
+                <a href="#" class="font-editorial text-4xl md:text-5xl hover:text-tomato transition-colors menu-link" data-action="archive">모든 레시피</a>
+                <a href="#" class="font-editorial text-4xl md:text-5xl hover:text-tomato transition-colors menu-link" data-action="popular">이번 주 인기 레시피</a>
+                <a href="#" class="font-editorial text-4xl md:text-5xl hover:text-tomato transition-colors menu-link" data-action="favs">찜한 레시피</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/data.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
