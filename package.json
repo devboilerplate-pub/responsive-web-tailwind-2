@@ -1,0 +1,31 @@
+{
+  "name": "responsive-web-tailwind-2",
+  "version": "1.0.0",
+  "description": "매거진 느낌의 에디토리얼 디자인을 적용한 아름다운 정적(Static) 요리 아카이브 웹사이트입니다.\r HTML, Tailwind CSS, 그리고 바닐라 JavaScript(Vanilla JS)의 조합을 학습하기 위한 초보자용 프로젝트로 제작되었습니다.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./css/input.css -o ./css/output.css",
+    "watch:css": "tailwindcss -i ./css/input.css -o ./css/output.css --watch",
+    "build": "npm run build:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devboilerplate-pub/responsive-web-tailwind-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/devboilerplate-pub/responsive-web-tailwind-2/issues"
+  },
+  "homepage": "https://github.com/devboilerplate-pub/responsive-web-tailwind-2#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
+  }
+}

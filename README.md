@@ -3,6 +3,8 @@
 매거진 느낌의 에디토리얼 디자인을 적용한 아름다운 정적(Static) 요리 아카이브 웹사이트입니다.
 HTML, Tailwind CSS, 그리고 바닐라 JavaScript(Vanilla JS)의 조합을 학습하기 위한 초보자용 프로젝트로 제작되었습니다.
 
+최근 성능 최적화를 위해 **Tailwind CSS CDN 방식에서 Node.js 기반 빌드 환경으로 성공적으로 마이그레이션** 되었습니다.
+
 ## 주요 기능
 
 - **에디토리얼 디자인 (Editorial Design)**: 비대칭 그리드 레이아웃, 잡지 스타일 타이포그래피, 그리고 따뜻한 색감을 사용했습니다.
@@ -14,36 +16,42 @@ HTML, Tailwind CSS, 그리고 바닐라 JavaScript(Vanilla JS)의 조합을 학�
 ## 사용된 기술
 
 - **HTML5**: 시맨틱 태그 구조 및 단일 페이지(Single Page) 레이아웃 적용.
-- **Tailwind CSS (CDN 방식)**: 복잡한 빌드 과정 없이 `<script>` 태그 내 설정만으로 빠르고 직관적인 유틸리티 클래스 스타일링 적용.
+- **Tailwind CSS (NPM Build)**: 성능 최적화를 위해 직접 빌드 파이프라인을 구축하여 프로젝트에서 실제로 사용된 클래스만 포함된 가벼운 CSS를 생성합니다.
 - **바닐라 JavaScript (Vanilla JS)**: 외부 라이브러리 없이 DOM 조작, 이벤트 핸들링, 정렬 기능, 상태 관리를 직접 구현.
 
-## 로컬 실행 방법
+## 로컬 실행 및 개발 방법
 
-이 프로젝트는 완전히 정적인 웹사이트이므로 복잡한 빌드 도구가 필요하지 않습니다.
+프로젝트에 최적화된 Tailwind CSS 빌드 환경이 적용되어 있으므로 Node.js가 필요합니다.
 
 1. 이 저장소(Repository)를 클론(Clone)하거나 다운로드합니다.
-2. 브라우저에서 `index.html` 파일을 직접 엽니다.
-3. 또는 VS Code를 사용하신다면 "Live Server" 확장 프로그램을 통해 로컬 서버를 띄워 확인하실 수 있습니다.
+2. 터미널에서 패키지를 설치합니다: `npm install`
+3. CSS를 빌드합니다: `npm run build:css` (개발 중 실시간 컴파일을 원한다면 `npm run watch:css`를 켜둡니다.)
+4. 브라우저에서 `index.html` 파일을 직접 열거나, VS Code의 "Live Server" 확장 프로그램을 통해 확인합니다.
 
 ## Vercel 배포 방법
 
-추가 설정 없이 Vercel을 통해 정적 사이트로 즉시 배포가 가능합니다.
+Vercel 플랫폼 환경에 완벽하게 호환되며 추가 설정 없이도 자동화된 배포가 가능합니다. (`vercel.json` 및 `build` 스크립트가 이미 세팅되어 있습니다.)
 
 1. 코드를 본인의 GitHub 저장소에 푸시(Push)합니다.
-2. [Vercel](https://vercel.com/)에 로그인한 뒤 **Add New Project**를 클릭합니다.
-3. GitHub 저장소를 임포트(Import)합니다.
-4. 모든 빌드 설정은 기본값으로 둡니다. (Framework Preset: Other, Build Command: 비움, Output Directory: 비움)
-5. **Deploy** 버튼을 클릭합니다. Vercel이 자동으로 정적 파일들을 호스팅해줍니다.
+2. [Vercel](https://vercel.com/)에 로그인한 뒤 **Add New Project**를 클릭하여 GitHub 저장소를 임포트(Import)합니다.
+3. Vercel이 자동으로 `package.json` 안의 `build` 명령어를 감지합니다.
+4. **Deploy** 버튼을 클릭합니다. 몇 십 초 내에 Tailwind CSS가 클라우드에서 빌드된 뒤 웹사이트가 정적으로 배포됩니다.
 
 ## 폴더 구조
 
 ```
 /
-├─ index.html       # 메인 HTML 파일 및 Tailwind CDN/테마 설정
+├─ index.html           # 메인 HTML 파일
+├─ package.json         # npm 의존성 및 빌드 스크립트 정의
+├─ tailwind.config.js   # 커스텀 색상/폰트 등 Tailwind 테마 설정
+├─ vercel.json          # Vercel 라우팅(Clean URLs 등) 최적화 설정
 ├─ css/
-│  └─ input.css     # 커스텀 CSS (스크롤바 숨김 등 일부 유틸리티로 해결하기 어려운 스타일)
+│  ├─ input.css         # Tailwind 지시어 및 커스텀 스타일 원본
+│  └─ output.css        # 빌드되어 브라우저에 서빙되는 최종 CSS (Git 반영 여부 선택)
 ├─ js/
-│  ├─ data.js       # 12개의 샘플 요리 데이터가 들어있는 배열
-│  └─ main.js       # 그리드 렌더링, 모달 제어, 필터링 등 핵심 자바스크립트 로직
-└─ README.md        # 프로젝트 설명서 (현재 파일)
+│  ├─ data.js           # 12개의 샘플 요리 데이터가 들어있는 배열
+│  └─ main.js           # 그리드 렌더링, 모달 제어, 필터링 등 핵심 자바스크립트 로직
+├─ images/              # 프로젝트 내에서 사용되는 로컬 이미지 에셋들 모음
+├─ docs/                # 프로젝트 분석, 배포 가이드, 에셋 등 각종 문서 폴더
+└─ README.md            # 프로젝트 설명서 (현재 파일)
 ```
